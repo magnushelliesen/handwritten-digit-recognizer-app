@@ -7,12 +7,12 @@ from google.cloud import storage
 import pickle
 import os
 
-# Set the path to your service account key file if running locally
-os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "neural-network-app-440619-e35407f6e90c.json"
-
 # Function to run once and get neural net from pickle stored in bucket
 @st.cache_data
 def get_neural_network():
+    # Set the path to your service account key file if running locally
+    # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "neural-network-app-440619-e35407f6e90c.json"
+
     # Create a storage client
     client = storage.Client()
 
@@ -30,16 +30,16 @@ def get_neural_network():
 
 nn = get_neural_network()
 
-st.header('Handwritten digit recognizer')
+st.header('Handwritten digit recognizer 🖋️')
 st.write('By Magnus Kvåle Helliesen')
 
 # Accept drawing as user input 
 drawing = st_canvas(
-    stroke_width=20,
+    stroke_width=10,
     stroke_color="#000000",
     background_color="#FFFFFF",
-    width=500,
-    height=500,
+    width=250,
+    height=250,
     drawing_mode="freedraw",
     key="canvas"
 )
@@ -67,10 +67,10 @@ if st.button('Recognize'):
 
     # Return guess with varying level of confidence
     if max_p > 0.8:
-        st.header(f"I'm pretty sure it's a {guess}")
+        st.header(f"I'm pretty sure it's a {guess} 😁")
     elif max_p > 0.4:
-        st.header(f"It kinda looks like a {guess}")
+        st.header(f"It kinda looks like a {guess} 🙂")
     elif max_p > 0.2:
-        st.header(f"Could it be a {guess}?")
+        st.header(f"Could it be a {guess}? 🤔")
     else:
-        st.header(f"My best guess is a {guess}?")
+        st.header(f"My best guess is a {guess} 🫣")
