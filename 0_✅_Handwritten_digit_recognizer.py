@@ -35,7 +35,7 @@ st.write('By Magnus Kvåle Helliesen')
 
 # Accept drawing as user input 
 drawing = st_canvas(
-    stroke_width=10,
+    stroke_width=15,
     stroke_color="#000000",
     background_color="#FFFFFF",
     width=250,
@@ -48,8 +48,7 @@ drawing = st_canvas(
 if st.button('Recognize'):
     X = np.mean(np.array(drawing.image_data)[:, :, :3], axis=2)
     x = matrix_mapper(X, 28, 28)
-    
-    #x[x<200] = 0
+    x[x<150] = 0
     digit = (255-x).reshape(784)
 
     # Normalize the input
