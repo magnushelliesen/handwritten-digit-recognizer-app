@@ -35,7 +35,7 @@ st.write('By Magnus Kvåle Helliesen')
 
 # Accept drawing as user input 
 drawing = st_canvas(
-    stroke_width=15,
+    stroke_width=30,
     stroke_color="#000000",
     background_color="#FFFFFF",
     width=250,
@@ -47,11 +47,36 @@ drawing = st_canvas(
 # Use neural net to recognize user input
 if st.button('Recognize'):
     X = np.mean(np.array(drawing.image_data)[:, :, :3], axis=2)
+
+    # Padding the input with white in the edges
+
+    # Pad in y direction
+    height = X.shape[0]
+    width = X.shape[1]
+
+    X = np.vstack((
+        np.full((int(height*0.2), width), 255),
+        X,
+        np.full((int(height*0.2), width), 255)
+    ))
+    
+    # Pad in x direction
+    height = X.shape[0]
+    width = X.shape[1]
+
+    X = np.hstack((
+        np.full((height, int(width*0.2)), 255),
+        X,
+        np.full((height, int(width*0.2)), 255)
+    ))
+
+    # Resizing input to 28 x 28
     x = matrix_mapper(X, 28, 28)
-    x[x<150] = 0
+
+    # Reshaping to a vector
     digit = (255-x).reshape(784)
 
-    # Normalize the input
+    # Normalizing the input
     digit_norm = (digit-digit.mean())/digit.std()
 
     # Use neural net to make prediction
@@ -73,3 +98,9 @@ if st.button('Recognize'):
         st.header(f"Could it be a {guess}? 🤔")
     else:
         st.header(f"My best guess is a {guess} 🫣")
+
+
+    #import matplotlib.pyplot as plt
+    #fig, ax = plt.subplots()
+    #im = ax.imshow(x)
+    #st.pyplot(fig)
