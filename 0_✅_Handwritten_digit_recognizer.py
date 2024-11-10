@@ -5,13 +5,15 @@ from matrix_mapper.matrix_mapper import matrix_mapper
 from neural_network.neural_network import NeuralNetwork
 from google.cloud import storage
 import pickle
+from pathlib import Path
 import os
 
 # Function to run once and get neural net from pickle stored in bucket
 @st.cache_data
 def get_neural_network():
     # Set the path to your service account key file if running locally
-    # os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "neural-network-app-440619-e35407f6e90c.json"
+    if Path("neural-network-app-440619-e35407f6e90c.json").exists():
+        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "neural-network-app-440619-e35407f6e90c.json"
 
     # Create a storage client
     client = storage.Client()
