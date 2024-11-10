@@ -4,7 +4,7 @@ The app is running on Google Cloud: [https://handwritten-digit-recognizer-app-56
 
 ---
 <p align="center">
-  <img src="https://github.com/user-attachments/assets/0fbae423-2eec-4fec-9875-04b64aac6f11" alt="Image Description" width="400"/>
+  <img src="https://github.com/user-attachments/assets/f29b80bf-7967-44c6-95a7-09e00ecb3190" alt="Image Description" width="400"/>
 </p>
 
 ---
