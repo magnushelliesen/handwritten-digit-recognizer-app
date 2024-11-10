@@ -7,33 +7,29 @@ from google.cloud import storage
 import pickle
 from pathlib import Path
 import os
+from time import sleep
+from recources import get_neural_network
 
-# Function to run once and get neural net from pickle stored in bucket
-@st.cache_data
-def get_neural_network():
-    # Set the path to your service account key file if running locally
-    if Path("neural-network-app-440619-e35407f6e90c.json").exists():
-        os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "neural-network-app-440619-e35407f6e90c.json"
+st.set_page_config(
+    initial_sidebar_state="collapsed"
+)
 
-    # Create a storage client
-    client = storage.Client()
-
-    # Specify the bucket name
-    bucket_name = 'neural-network-pre-trained'
-    bucket = client.get_bucket(bucket_name)
-
-    # Get pickled neural network
-    blob = bucket.blob('nn.pickle')
-
-    pickle_data = blob.download_as_bytes()
-
-    # Load the pickle data
-    return pickle.loads(pickle_data)
-
+#Get NeuralNetwork-instance
 nn = get_neural_network()
 
-st.header('Handwritten digit recognizer 🖋️')
-st.write('By Magnus Kvåle Helliesen')
+# Show welcome message once
+if not 'initialized' in st.session_state:
+    welcome = st.empty()
+    for i in range(0, 35, 1):
+        welcome.progress(i, "Welcome to this handwritten digit-recognizer 👋",)
+        sleep(0.05)
+    for i in range(35, 100, 1):
+        welcome.progress(i, "For best result, use the whole white square 👍")
+        sleep(0.05)
+    welcome.empty()
+    st.session_state['initialized'] = True
+
+st.header('Write a digit 🖋️')
 
 # Accept drawing as user input 
 drawing = st_canvas(
@@ -47,7 +43,7 @@ drawing = st_canvas(
 )
 
 # Use neural net to recognize user input
-if st.button('Recognize'):
+if st.button("Recognize digit 👀"):
     X = np.mean(np.array(drawing.image_data)[:, :, :3], axis=2)
 
     # Padding the input with white in the edges
