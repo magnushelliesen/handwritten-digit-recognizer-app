@@ -15,15 +15,19 @@ st.set_page_config(
 )
 
 #Get NeuralNetwork-instance
-nn = get_neural_network()
+if 'nn' in st.session_state:
+    nn = st.session_state.nn
+else:
+    nn = get_neural_network()
+    st.session_state.nn = nn
 
 # Show welcome message once
 if not 'initialized' in st.session_state:
     welcome = st.empty()
-    for i in range(0, 35, 1):
+    for i in range(0, 40, 1):
         welcome.progress(i, "Welcome to this handwritten digit-recognizer 👋",)
         sleep(0.05)
-    for i in range(35, 100, 1):
+    for i in range(40, 100, 1):
         welcome.progress(i, "For best result, use the whole white square 👍")
         sleep(0.05)
     welcome.empty()
@@ -78,7 +82,11 @@ if st.button("Recognize digit 👀"):
     digit_norm = (digit-digit.mean())/digit.std()
 
     # Use neural net to make prediction
-    prediction = nn.predict(digit_norm)
+    try:
+        prediction = nn.predict(digit_norm)
+    except ValueError:
+        st.error("I'm sorry, I can't make that out 😭")
+        st.stop()
 
     # Find the highest probability and return as guess
     max_p = 0
@@ -96,9 +104,3 @@ if st.button("Recognize digit 👀"):
         st.header(f"Could it be a {guess}? 🤔")
     else:
         st.header(f"My best guess is a {guess} 🫣")
-
-
-    #import matplotlib.pyplot as plt
-    #fig, ax = plt.subplots()
-    #im = ax.imshow(x)
-    #st.pyplot(fig)
