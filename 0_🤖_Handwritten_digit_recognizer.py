@@ -8,7 +8,7 @@ import pickle
 from pathlib import Path
 import os
 from time import sleep
-from recources import get_neural_network
+from recourses import get_neural_network
 
 st.set_page_config(
     initial_sidebar_state="collapsed"
