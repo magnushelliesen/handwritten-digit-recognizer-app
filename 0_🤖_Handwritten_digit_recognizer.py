@@ -37,7 +37,7 @@ st.header('Write a digit 🖋️')
 
 # Accept drawing as user input 
 drawing = st_canvas(
-    stroke_width=30,
+    stroke_width=25,
     stroke_color="#000000",
     background_color="#FFFFFF",
     width=250,
@@ -57,9 +57,9 @@ if st.button("Recognize digit 👀"):
     width = X.shape[1]
 
     X = np.vstack((
-        np.full((int(height*0.3), width), 255),
+        np.full((int(height*0.15), width), 255),
         X,
-        np.full((int(height*0.1), width), 255)
+        np.full((int(height*0.05), width), 255)
     ))
     
     # Pad in x direction
@@ -67,9 +67,9 @@ if st.button("Recognize digit 👀"):
     width = X.shape[1]
 
     X = np.hstack((
-        np.full((height, int(width*0.20)), 255),
+        np.full((height, int(width*0.10)), 255),
         X,
-        np.full((height, int(width*0.20)), 255)
+        np.full((height, int(width*0.10)), 255)
     ))
 
     # Resizing input to 28 x 28
@@ -96,9 +96,8 @@ if st.button("Recognize digit 👀"):
     elif guess[0][0] > 0.4:
         st.header(f"It kinda looks like a {guess[0][1]} 🙂")
     elif guess[0][0] > 0.2:
-        st.header(f"Could it be a {guess[0][1]}? 🤔")
+        st.header(f"It could be a {guess[0][1]} 🤔")
     else:
-        st.header(f"My best guess is a {guess[0][1]} 🫣")
-
+        st.subheader(f"My best guess is a {guess[0][1]} 🫣")
     if guess[1][0] > 0.2:
-        st.header(f"... but it could also be a {guess[1][1]} 😵‍💫")
+        st.subheader(f"... but it could also be a {guess[1][1]} 😵‍💫")
