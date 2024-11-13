@@ -57,9 +57,9 @@ if st.button("Recognize digit 👀"):
     width = X.shape[1]
 
     X = np.vstack((
-        np.full((int(height*0.2), width), 255),
+        np.full((int(height*0.3), width), 255),
         X,
-        np.full((int(height*0.2), width), 255)
+        np.full((int(height*0.1), width), 255)
     ))
     
     # Pad in x direction
@@ -67,9 +67,9 @@ if st.button("Recognize digit 👀"):
     width = X.shape[1]
 
     X = np.hstack((
-        np.full((height, int(width*0.2)), 255),
+        np.full((height, int(width*0.20)), 255),
         X,
-        np.full((height, int(width*0.2)), 255)
+        np.full((height, int(width*0.20)), 255)
     ))
 
     # Resizing input to 28 x 28
@@ -88,19 +88,17 @@ if st.button("Recognize digit 👀"):
         st.error("I'm sorry, I can't make that out 😭")
         st.stop()
 
-    # Find the highest probability and return as guess
-    max_p = 0
-    for n, p in enumerate(prediction):
-        if p > max_p:
-            max_p = p
-            guess = n
-
     # Return guess with varying level of confidence
-    if max_p > 0.8:
-        st.header(f"I'm pretty sure it's a {guess} 😁")
-    elif max_p > 0.4:
-        st.header(f"It kinda looks like a {guess} 🙂")
-    elif max_p > 0.2:
-        st.header(f"Could it be a {guess}? 🤔")
+    guess = sorted(zip(prediction, range(9)), reverse=True)
+
+    if guess[0][0] > 0.8:
+        st.header(f"I'm pretty sure it's a {guess[0][1]} 😁")
+    elif guess[0][0] > 0.4:
+        st.header(f"It kinda looks like a {guess[0][1]} 🙂")
+    elif guess[0][0] > 0.2:
+        st.header(f"Could it be a {guess[0][1]}? 🤔")
     else:
-        st.header(f"My best guess is a {guess} 🫣")
+        st.header(f"My best guess is a {guess[0][1]} 🫣")
+
+    if guess[1][0] > 0.2:
+        st.header(f"... but it could also be a {guess[1][1]} 😵‍💫")
