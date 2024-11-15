@@ -8,7 +8,7 @@ import pickle
 from pathlib import Path
 import os
 from time import sleep
-from functions import get_neural_network
+from functions import get_neural_network, center_input
 
 st.set_page_config(
     initial_sidebar_state="collapsed"
@@ -37,7 +37,7 @@ st.header('Write a digit 🖋️')
 
 # Accept drawing as user input 
 drawing = st_canvas(
-    stroke_width=25,
+    stroke_width=20,
     stroke_color="#000000",
     background_color="#FFFFFF",
     width=250,
@@ -50,6 +50,8 @@ drawing = st_canvas(
 if st.button("Recognize digit 👀"):
     X = np.mean(np.array(drawing.image_data)[:, :, :3], axis=2)
 
+    X = center_input(X)
+
     # Padding the input with white in the edges
 
     # Pad in y direction
@@ -57,9 +59,9 @@ if st.button("Recognize digit 👀"):
     width = X.shape[1]
 
     X = np.vstack((
-        np.full((int(height*0.15), width), 255),
+        np.full((int(height*0.25), width), 255),
         X,
-        np.full((int(height*0.05), width), 255)
+        np.full((int(height*0.25), width), 255)
     ))
     
     # Pad in x direction
@@ -67,9 +69,9 @@ if st.button("Recognize digit 👀"):
     width = X.shape[1]
 
     X = np.hstack((
-        np.full((height, int(width*0.10)), 255),
+        np.full((height, int(width*0.25)), 255),
         X,
-        np.full((height, int(width*0.10)), 255)
+        np.full((height, int(width*0.25)), 255)
     ))
 
     # Resizing input to 28 x 28
@@ -101,3 +103,8 @@ if st.button("Recognize digit 👀"):
         st.subheader(f"My best guess is a {guess[0][1]} 🫣")
     if guess[1][0] > 0.2:
         st.subheader(f"... but it could also be a {guess[1][1]} 😵‍💫")
+
+    import matplotlib.pyplot as plt
+    fig, ax = plt.subplots()
+    plt.imshow(X)
+    st.pyplot(fig)
