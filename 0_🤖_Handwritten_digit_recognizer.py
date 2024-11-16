@@ -58,21 +58,21 @@ if st.button("Recognize digit 👀"):
     height = X.shape[0]
     width = X.shape[1]
 
-    X = np.vstack((
-        np.full((int(height*0.25), width), 255),
-        X,
-        np.full((int(height*0.25), width), 255)
-    ))
+    #X = np.vstack((
+    #    np.full((int(height*0.15), width), 255),
+    #    X,
+    #    np.full((int(height*0.05), width), 255)
+    #))
     
     # Pad in x direction
     height = X.shape[0]
     width = X.shape[1]
 
-    X = np.hstack((
-        np.full((height, int(width*0.25)), 255),
-        X,
-        np.full((height, int(width*0.25)), 255)
-    ))
+    #X = np.hstack((
+    #    np.full((height, int(width*0.20)), 255),
+    #    X,
+    #    np.full((height, int(width*0.20)), 255)
+    #))
 
     # Resizing input to 28 x 28
     x = matrix_mapper(X, 28, 28)
@@ -104,7 +104,7 @@ if st.button("Recognize digit 👀"):
     if guess[1][0] > 0.2:
         st.subheader(f"... but it could also be a {guess[1][1]} 😵‍💫")
 
-    import matplotlib.pyplot as plt
-    fig, ax = plt.subplots()
-    plt.imshow(X)
-    st.pyplot(fig)
+    #import matplotlib.pyplot as plt
+    #fig, ax = plt.subplots()
+    #plt.imshow(x)
+    #st.pyplot(fig)
