@@ -3,3 +3,4 @@ streamlit-drawable-canvas
 git+https://github.com/magnushelliesen/matrix-mapper.git
 git+https://github.com/magnushelliesen/neural-network.git
 google-cloud-storage
+matplotlib
