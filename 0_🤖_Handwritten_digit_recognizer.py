@@ -48,7 +48,7 @@ drawing = st_canvas(
 )
 
 calculate = st.button("Recognize digit 👀")
-show_details = st.toggle("Show details", True)
+show_details = st.toggle("Show nitty gritty details 🧮", True)
 
 # Use neural net to recognize user input
 if calculate:
@@ -110,7 +110,7 @@ if calculate:
         st.write(f"... but it could also be a {guess[1][1]} 😵‍💫")
 
     if show_details:
-        st.header("Steps in calculation 🧮")
+        st.header("Steps in calculation")
 
         st.subheader('Digit after pre-processing')
         fig, ax = plt.subplots(figsize=(4, 4))
