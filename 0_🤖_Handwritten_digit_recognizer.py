@@ -22,18 +22,6 @@ else:
     nn = get_neural_network()
     st.session_state.nn = nn
 
-# Show welcome message once
-if not 'initialized' in st.session_state:
-    welcome = st.empty()
-    for i in range(0, 40, 1):
-        welcome.progress(i, "Welcome to this handwritten digit-recognizer 👋",)
-        sleep(0.05)
-    for i in range(40, 100, 1):
-        welcome.progress(i, "For best result, use the whole white square 👍")
-        sleep(0.05)
-    welcome.empty()
-    st.session_state['initialized'] = True
-
 st.header('Write a digit 🖋️')
 
 # Accept drawing as user input 
@@ -97,7 +85,7 @@ if calculate:
     # Return guess with varying level of confidence
     guess = sorted(zip(prediction, range(10)), reverse=True)
 
-    st.header("Best guess")
+    st.header("Best guess:")
     if guess[0][0] > 0.8:
         st.write(f"I'm pretty sure it's a {guess[0][1]} 😁")
     elif guess[0][0] > 0.4:
@@ -110,9 +98,9 @@ if calculate:
         st.write(f"... but it could also be a {guess[1][1]} 😵‍💫")
 
     if show_details:
-        st.header("Steps in calculation")
+        st.header("Steps in calculation:")
 
-        st.subheader('Digit after pre-processing')
+        st.write('Digit after pre-processing')
         fig, ax = plt.subplots(figsize=(4, 4))
         plt.imshow(x, cmap='gray')
         plt.xticks([])
@@ -120,7 +108,7 @@ if calculate:
         ax.axis('off')
         st.pyplot(fig)
 
-        st.subheader('Probability distribution $P$ over digits $i$ from pre-trained neural network')
+        st.write('Probability distribution $P$ over digits $i$ from pre-trained neural network')
         fig, ax = plt.subplots(figsize=(4,2))
         ax.bar(height=prediction, x=[f'{i}' for i in range(10)], color='b')
         plt.xlabel('$i$')
