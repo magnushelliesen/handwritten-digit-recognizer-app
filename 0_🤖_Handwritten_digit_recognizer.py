@@ -51,9 +51,9 @@ if calculate:
     width = X.shape[1]
 
     X = np.vstack((
-        np.full((int(height*0.1), width), 255),
+        np.full((int(height*0.25), width), 255),
         X,
-        np.full((int(height*0.1), width), 255)
+        np.full((int(height*0.15), width), 255)
     ))
     
     # Pad in x direction
@@ -61,9 +61,9 @@ if calculate:
     width = X.shape[1]
 
     X = np.hstack((
-        np.full((height, int(width*0.1)), 255),
+        np.full((height, int(width*0.2)), 255),
         X,
-        np.full((height, int(width*0.1)), 255)
+        np.full((height, int(width*0.2)), 255)
     ))
 
     # Resizing input to 28 x 28
@@ -100,7 +100,10 @@ if calculate:
     if show_details:
         st.header("Steps in calculation:")
 
-        st.write('Digit after pre-processing')
+        st.write('The digit is first pre-preprocessed, \
+                 that is: cropped, centered and turned into $28 \\times 28$ pixles \
+                 (which is the same format the MNIST dataset operates with). \
+                 After pre-processing, the digit looks like this:')
         fig, ax = plt.subplots(figsize=(4, 4))
         plt.imshow(x, cmap='gray')
         plt.xticks([])
@@ -108,9 +111,12 @@ if calculate:
         ax.axis('off')
         st.pyplot(fig)
 
-        st.write('Probability distribution $P$ over digits $i$ from pre-trained neural network')
+        st.write('Next, the digit is made into a $28 \\times 28 = 784$ element long vector.\
+                 Finally, this is fed to the forward propagation-method of the pre-trained neural network instance, \
+                 and out pops the following probability distribution $P$ over digits $i$:')
         fig, ax = plt.subplots(figsize=(4,2))
-        ax.bar(height=prediction, x=[f'{i}' for i in range(10)], color='b')
+        ax.bar(height=prediction, x=[f'{i}' for i in range(10)], color='#f63366')
         plt.xlabel('$i$')
         plt.ylabel('$P(i)$')
+        plt.yticks(ticks=np.linspace(0, 1, 6))
         st.pyplot(fig)
