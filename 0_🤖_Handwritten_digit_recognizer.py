@@ -112,8 +112,8 @@ if calculate:
         st.pyplot(fig)
 
         # Hidden layer(s)
-        st.write("Next, the digit is made into a $784$ ($= 28 \\times 28$) element-long vector, \
-                 which is fed to the predict (i.e. _forward propagation_)-method of the pre-trained neural network instance. \
+        st.write("Next, the digit is made into a $784$ ($=28 \\times 28$) element-long vector, \
+                 which is fed to the predict-method (i.e. _forward propagation_) of the pre-trained neural network instance. \
                  This is what the activations through the hidden layers look like \
                  (the vectors have been made into square matrices for visual purposes):")
         fig, ax = plt.subplots(nrows=1, ncols=nn.n_hidden, figsize=(nn.n_hidden*2, 2), frameon=False)
