@@ -100,23 +100,39 @@ if calculate:
     if show_details:
         st.header("Steps in calculation:")
 
-        st.write('The digit is first pre-preprocessed, \
+        # Input layer
+        st.write("The digit is first pre-preprocessed, \
                  that is: cropped, centered and turned into $28 \\times 28$ pixles \
                  (which is the same format the MNIST dataset operates with). \
-                 After pre-processing, the digit looks like this:')
-        fig, ax = plt.subplots(figsize=(4, 4))
-        plt.imshow(x, cmap='gray')
+                 After pre-processing, the digit looks like this:")
+        fig, ax = plt.subplots(figsize=(4, 4), frameon=False)
+        plt.imshow(x, cmap='plasma')
         plt.xticks([])
         plt.yticks([])
-        ax.axis('off')
         st.pyplot(fig)
 
-        st.write('Next, the digit is made into a $28 \\times 28 = 784$ element long vector.\
-                 Finally, this is fed to the forward propagation-method of the pre-trained neural network instance, \
-                 and out pops the following probability distribution $P$ over digits $i$:')
-        fig, ax = plt.subplots(figsize=(4,2))
+        # Hidden layer(s)
+        st.write("Next, the digit is made into a $784$ ($= 28 \\times 28$) element-long vector, \
+                 which is fed to the predict (i.e. _forward propagation_)-method of the pre-trained neural network instance. \
+                 This is what the activations through the hidden layers look like \
+                 (the vectors have been made into square matrices for visual purposes):")
+        fig, ax = plt.subplots(nrows=1, ncols=nn.n_hidden, figsize=(nn.n_hidden*2, 2), frameon=False)
+        for i, activation in enumerate(nn.last_activations[:-1]):
+            ax[i].imshow(activation.reshape(15, 15), cmap='plasma')
+            ax[i].set_title(f'Hidden layer {i+1}:', color='#f63366')
+            ax[i].set_xticks([])
+            ax[i].set_yticks([])
+        st.pyplot(fig)
+
+        # Output layer
+        st.write("Finally, out pops the following probability distribution $P$ over digits $i$:")
+        fig, ax = plt.subplots(figsize=(4,2), frameon=False)
         ax.bar(height=prediction, x=[f'{i}' for i in range(10)], color='#f63366')
-        plt.xlabel('$i$')
-        plt.ylabel('$P(i)$')
+        ax.tick_params(axis='x', colors='#f63366')
+        ax.tick_params(axis='y', colors='#f63366')
+        ax.set_xlabel('$i$', color='#f63366')
+        ax.set_ylabel('$P(i)$', color='#f63366')
         plt.yticks(ticks=np.linspace(0, 1, 6))
         st.pyplot(fig)
+
+        st.write("Cool, huh? 😎")
