@@ -1,6 +1,6 @@
 import numpy as np
 
-def center_input(input):
+def center_input(input: np.ndarray) -> np.ndarray:
     # Get the coordinates of all non-white elements
     non_zero_coords = np.argwhere(input != 255)
     
