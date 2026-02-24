@@ -1,6 +1,6 @@
 # handwritten-digit-recognizer-app
 
-The app is running on Google Cloud: [https://handwritten-digit-recognizer-app-569320861368.asia-east1.run.app/](https://handwritten-digit-recognizer-app-569320861368.asia-east1.run.app/).
+The app is hosted on Google App Run: [https://handwritten-digit-recognizer-app-569320861368.asia-east1.run.app/](https://handwritten-digit-recognizer-app-569320861368.asia-east1.run.app/).
 
 ---
 <p align="center">
