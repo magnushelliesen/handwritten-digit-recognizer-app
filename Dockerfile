@@ -15,4 +15,4 @@ COPY . .
 EXPOSE 8080
 
 # Command to run the app
-CMD ["streamlit", "run", "0_🤖_Handwritten_digit_recognizer.py", "--server.port=8080", "--server.enableCORS=false", "--browser.serverAddress=0.0.0.0"]
+CMD ["streamlit", "run", "src/app.py", "--server.port=8080", "--server.enableCORS=false", "--browser.serverAddress=0.0.0.0"]
