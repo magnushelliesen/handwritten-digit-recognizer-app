@@ -1,6 +1,7 @@
 import numpy as np
+from numpy.typing import NDArray
 
-def center_input(input: np.ndarray) -> np.ndarray:
+def center_input(input: NDArray[np.float128]) -> NDArray[np.float128]:
     # Get the coordinates of all non-white elements
     non_zero_coords = np.argwhere(input != 255)
     

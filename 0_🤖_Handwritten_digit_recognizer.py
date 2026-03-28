@@ -1,15 +1,11 @@
 import streamlit as st
-from streamlit_drawable_canvas import st_canvas
+from streamlit_drawable_canvas import st_canvas  # type: ignore
 import numpy as np
-from matrix_mapper.matrix_mapper import matrix_mapper
-from neural_network.neural_network import NeuralNetwork
-from google.cloud import storage
-import pickle
-from pathlib import Path
-import os
-from time import sleep
+from matrix_mapper.matrix_mapper import matrix_mapper  # type: ignore
 from functions import get_neural_network, center_input
 import matplotlib.pyplot as plt
+
+from numpy.typing import NDArray
 
 st.set_page_config(
     initial_sidebar_state="collapsed"
@@ -40,34 +36,35 @@ show_details = st.toggle("Show nitty gritty details 🧮", True)
 
 # Use neural net to recognize user input
 if calculate:
-    X = np.mean(np.array(drawing.image_data)[:, :, :3], axis=2)
+    drawing_array: NDArray[np.float128]
+    drawing_array = np.mean(np.array(drawing.image_data)[:, :, :3], axis=2)  # type: ignore
 
-    X = center_input(X)
+    drawing_array = center_input(drawing_array)
 
     # Padding the input with white in the edges
 
     # Pad in y direction
-    height = X.shape[0]
-    width = X.shape[1]
+    height = drawing_array.shape[0]
+    width = drawing_array.shape[1]
 
-    X = np.vstack((
+    drawing_array = np.vstack((
         np.full((int(height*0.25), width), 255),
-        X,
+        drawing_array,
         np.full((int(height*0.15), width), 255)
     ))
     
     # Pad in x direction
-    height = X.shape[0]
-    width = X.shape[1]
+    height = drawing_array.shape[0]
+    width = drawing_array.shape[1]
 
-    X = np.hstack((
+    drawing_array = np.hstack((
         np.full((height, int(width*0.2)), 255),
-        X,
+        drawing_array,
         np.full((height, int(width*0.2)), 255)
     ))
 
     # Resizing input to 28 x 28
-    x = matrix_mapper(X, 28, 28)
+    x = matrix_mapper(drawing_array, 28, 28)
 
     # Reshaping to a vector
     digit = (255-x).reshape(784)
@@ -105,10 +102,10 @@ if calculate:
                  that is: cropped, centered and turned into $28 \\times 28$ pixles \
                  (which is the same format the MNIST dataset operates with). \
                  After pre-processing, the digit looks like this:")
-        fig, ax = plt.subplots(figsize=(4, 4), frameon=False)
-        plt.imshow(x, cmap='plasma')
-        plt.xticks([])
-        plt.yticks([])
+        fig, ax = plt.subplots(figsize=(4, 4), frameon=False)  # type: ignore
+        plt.imshow(x, cmap='plasma')  # type: ignore
+        plt.xticks([])  # type: ignore
+        plt.yticks([])  # type: ignore
         st.pyplot(fig)
 
         # Hidden layer(s)
@@ -116,7 +113,7 @@ if calculate:
                  which is fed to the predict-method (i.e. _forward propagation_) of the pre-trained neural network instance. \
                  This is what the activations through the hidden layers look like \
                  (the vectors have been made into square matrices for visual purposes):")
-        fig, ax = plt.subplots(nrows=1, ncols=nn.n_hidden, figsize=(nn.n_hidden*2, 2), frameon=False)
+        fig, ax = plt.subplots(nrows=1, ncols=nn.n_hidden, figsize=(nn.n_hidden*2, 2), frameon=False)  # type: ignore
         for i, activation in enumerate(nn.last_activations[:-1]):
             ax[i].imshow(activation.reshape(15, 15), cmap='plasma')
             ax[i].set_title(f'Hidden layer {i+1}:', color='#f63366')
@@ -126,13 +123,13 @@ if calculate:
 
         # Output layer
         st.write("Finally, out pops the following probability distribution $P$ over digits $i$:")
-        fig, ax = plt.subplots(figsize=(4,2), frameon=False)
+        fig, ax = plt.subplots(figsize=(4,2), frameon=False)  # type: ignore
         ax.bar(height=prediction, x=[f'{i}' for i in range(10)], color='#f63366')
         ax.tick_params(axis='x', colors='#f63366')
         ax.tick_params(axis='y', colors='#f63366')
         ax.set_xlabel('$i$', color='#f63366')
         ax.set_ylabel('$P(i)$', color='#f63366')
-        plt.yticks(ticks=np.linspace(0, 1, 6))
+        plt.yticks(ticks=np.linspace(0, 1, 6))  # type: ignore
         st.pyplot(fig)
 
         st.write("Cool, huh? 😎")
