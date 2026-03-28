@@ -1,8 +1,8 @@
 import streamlit as st
 from functions import get_neural_network
 
-#Get NeuralNetwork-instance
-if 'nn' in st.session_state:
+# Get NeuralNetwork-instance
+if "nn" in st.session_state:
     nn = st.session_state.nn
 else:
     nn = get_neural_network()
@@ -22,4 +22,4 @@ st.markdown(
     The neural network has been trained showing it {nn.training: ,.0f} random digits from the
     [MNIST dataset](https://git-disl.github.io/GTDLBench/datasets/mnist_datasets/).
     """
-    )
+)

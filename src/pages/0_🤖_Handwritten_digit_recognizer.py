@@ -7,20 +7,18 @@ import matplotlib.pyplot as plt
 
 from numpy.typing import NDArray
 
-st.set_page_config(
-    initial_sidebar_state="collapsed"
-)
+st.set_page_config(initial_sidebar_state="collapsed")
 
-#Get NeuralNetwork-instance
-if 'nn' in st.session_state:
+# Get NeuralNetwork-instance
+if "nn" in st.session_state:
     nn = st.session_state.nn
 else:
     nn = get_neural_network()
     st.session_state.nn = nn
 
-st.header('Write a digit 🖋️')
+st.header("Write a digit 🖋️")
 
-# Accept drawing as user input 
+# Accept drawing as user input
 drawing = st_canvas(
     stroke_width=20,
     stroke_color="#000000",
@@ -28,7 +26,7 @@ drawing = st_canvas(
     width=250,
     height=250,
     drawing_mode="freedraw",
-    key="canvas"
+    key="canvas",
 )
 
 calculate = st.button("Recognize digit 👀")
@@ -47,34 +45,38 @@ if calculate:
     height = drawing_array.shape[0]
     width = drawing_array.shape[1]
 
-    drawing_array = np.vstack((
-        np.full((int(height*0.25), width), 255),
-        drawing_array,
-        np.full((int(height*0.15), width), 255)
-    ))
-    
+    drawing_array = np.vstack(
+        (
+            np.full((int(height * 0.25), width), 255),
+            drawing_array,
+            np.full((int(height * 0.15), width), 255),
+        )
+    )
+
     # Pad in x direction
     height = drawing_array.shape[0]
     width = drawing_array.shape[1]
 
-    drawing_array = np.hstack((
-        np.full((height, int(width*0.2)), 255),
-        drawing_array,
-        np.full((height, int(width*0.2)), 255)
-    ))
+    drawing_array = np.hstack(
+        (
+            np.full((height, int(width * 0.2)), 255),
+            drawing_array,
+            np.full((height, int(width * 0.2)), 255),
+        )
+    )
 
     # Resizing input to 28 x 28
-    x = matrix_mapper(drawing_array, 28, 28)
+    drawing_array_resized = matrix_mapper(drawing_array, 28, 28)
 
     # Reshaping to a vector
-    digit = (255-x).reshape(784)
+    digit = (255 - drawing_array_resized).reshape(784)
 
     # Normalizing the input
-    digit_norm = (digit-digit.mean())/digit.std()
+    normalized_digit = (digit - digit.mean()) / digit.std()
 
     # Use neural net to make prediction
     try:
-        prediction = nn.predict(digit_norm)
+        prediction = nn.predict(normalized_digit)
     except ValueError:
         st.error("I'm terribly sorry, I can't make that out 😭")
         st.stop()
@@ -98,37 +100,43 @@ if calculate:
         st.header("Steps in calculation:")
 
         # Input layer
-        st.write("The digit is first pre-preprocessed, \
+        st.write(
+            "The digit is first pre-preprocessed, \
                  that is: cropped, centered and turned into $28 \\times 28$ pixles \
                  (which is the same format the MNIST dataset operates with). \
-                 After pre-processing, the digit looks like this:")
+                 After pre-processing, the digit looks like this:"
+        )
         fig, ax = plt.subplots(figsize=(4, 4), frameon=False)  # type: ignore
-        plt.imshow(x, cmap='plasma')  # type: ignore
+        plt.imshow(drawing_array_resized, cmap="plasma")  # type: ignore
         plt.xticks([])  # type: ignore
         plt.yticks([])  # type: ignore
         st.pyplot(fig)
 
         # Hidden layer(s)
-        st.write("Next, the digit is made into a $784$ ($=28 \\times 28$) element-long vector, \
+        st.write(
+            "Next, the digit is made into a $784$ ($=28 \\times 28$) element-long vector, \
                  which is fed to the predict-method (i.e. _forward propagation_) of the pre-trained neural network instance. \
                  This is what the activations through the hidden layers look like \
-                 (the vectors have been made into square matrices for visual purposes):")
-        fig, ax = plt.subplots(nrows=1, ncols=nn.n_hidden, figsize=(nn.n_hidden*2, 2), frameon=False)  # type: ignore
+                 (the vectors have been made into square matrices for visual purposes):"
+        )
+        fig, ax = plt.subplots(nrows=1, ncols=nn.n_hidden, figsize=(nn.n_hidden * 2, 2), frameon=False)  # type: ignore
         for i, activation in enumerate(nn.last_activations[:-1]):
-            ax[i].imshow(activation.reshape(15, 15), cmap='plasma')
-            ax[i].set_title(f'Hidden layer {i+1}:', color='#f63366')
+            ax[i].imshow(activation.reshape(15, 15), cmap="plasma")
+            ax[i].set_title(f"Hidden layer {i+1}:", color="#f63366")
             ax[i].set_xticks([])
             ax[i].set_yticks([])
         st.pyplot(fig)
 
         # Output layer
-        st.write("Finally, out pops the following probability distribution $P$ over digits $i$:")
-        fig, ax = plt.subplots(figsize=(4,2), frameon=False)  # type: ignore
-        ax.bar(height=prediction, x=[f'{i}' for i in range(10)], color='#f63366')
-        ax.tick_params(axis='x', colors='#f63366')
-        ax.tick_params(axis='y', colors='#f63366')
-        ax.set_xlabel('$i$', color='#f63366')
-        ax.set_ylabel('$P(i)$', color='#f63366')
+        st.write(
+            "Finally, out pops the following probability distribution $P$ over digits $i$:"
+        )
+        fig, ax = plt.subplots(figsize=(4, 2), frameon=False)  # type: ignore
+        ax.bar(height=prediction, x=[f"{i}" for i in range(10)], color="#f63366")
+        ax.tick_params(axis="x", colors="#f63366")
+        ax.tick_params(axis="y", colors="#f63366")
+        ax.set_xlabel("$i$", color="#f63366")
+        ax.set_ylabel("$P(i)$", color="#f63366")
         plt.yticks(ticks=np.linspace(0, 1, 6))  # type: ignore
         st.pyplot(fig)
 
