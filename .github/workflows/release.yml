@@ -1,22 +1,17 @@
-name: Build and Deploy to GCP
+name: Build and Deploy
 
 on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
-    env:
-      PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
-      SERVICE_NAME: handwritten-digit-recognizer-app
-      REGION: asia-east1
 
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
-      - name: Authenticate to Google Cloud
+      - name: Authenticate to GCP
         uses: google-github-actions/auth@v2
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
@@ -24,27 +19,21 @@ jobs:
       - name: Set up gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
 
-      - name: Set project
-        run: gcloud config set project $PROJECT_ID
+      - name: Configure Docker for GCP
+        run: gcloud auth configure-docker
 
-      - name: Configure Docker for GCR
-        run: gcloud auth configure-docker --quiet
-
-      - name: Build and push image
+      - name: Build Docker image
         run: |
-          gcloud builds submit \
-            --tag gcr.io/$PROJECT_ID/$SERVICE_NAME:${{ github.sha }}
+          docker build -t gcr.io/$GCP_PROJECT_ID/handwritten-digit-recognizer-app:$GITHUB_SHA .
 
-      - name: Deploy to Cloud Run (update existing service)
+      - name: Push Docker image
         run: |
-          gcloud run deploy $SERVICE_NAME \
-            --image gcr.io/$PROJECT_ID/$SERVICE_NAME:${{ github.sha }} \
+          docker push gcr.io/$GCP_PROJECT_ID/handwritten-digit-recognizer-app:$GITHUB_SHA
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy handwritten-digit-recognizer-app \
+            --image gcr.io/$GCP_PROJECT_ID/handwritten-digit-recognizer-app:$GITHUB_SHA \
             --platform managed \
-            --region $REGION \
+            --region asia-east1 \
             --allow-unauthenticated
-
-      - name: Show service URL
-        run: |
-          gcloud run services describe $SERVICE_NAME \
-            --region $REGION \
-            --format="value(status.url)"
