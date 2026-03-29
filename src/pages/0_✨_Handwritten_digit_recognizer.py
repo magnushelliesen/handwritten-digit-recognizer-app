@@ -96,7 +96,7 @@ if calculate:
         st.write(f"... but it could also be a {guess[1][1]} 😵‍💫")
 
     if show_details:
-        st.header("Steps in calculation:")
+        st.subheader("Steps in calculation:")
 
         # Input layer
         st.write(
