@@ -15,7 +15,7 @@ else:
         nn = get_neural_network()
     st.session_state.nn = nn
 
-st.header("Write a digit (i.e. 1, 2, ...) 🖋️")
+st.header("Write a digit (1, 2, ...) 🖋️")
 
 # Accept drawing as user input
 drawing = st_canvas(
