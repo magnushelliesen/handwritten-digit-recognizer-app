@@ -15,7 +15,7 @@ else:
         nn = get_neural_network()
     st.session_state.nn = nn
 
-st.header("Write a digit (1, 2, ...) 🖋️")
+st.subheader("Write a digit (1, 2, ...) 🖋️")
 
 # Accept drawing as user input
 drawing = st_canvas(
@@ -83,7 +83,7 @@ if calculate:
     # Return guess with varying level of confidence
     guess = sorted(zip(prediction, range(10)), reverse=True)
 
-    st.header("Best guess:")
+    st.subheader("Best guess:")
     if guess[0][0] > 0.8:
         st.write(f"I'm _pretty_ sure thats's a {guess[0][1]} 😁")
     elif guess[0][0] > 0.4:
