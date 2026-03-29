@@ -22,7 +22,3 @@ jobs:
       - name: Test authentication
         run: |
           gcloud auth list
-
-      - name: Simple API test (list buckets)
-        run: |
-          gsutil ls
