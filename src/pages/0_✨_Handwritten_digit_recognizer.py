@@ -7,16 +7,15 @@ import matplotlib.pyplot as plt
 
 from numpy.typing import NDArray
 
-st.set_page_config(initial_sidebar_state="collapsed")
-
 # Get NeuralNetwork-instance
 if "nn" in st.session_state:
     nn = st.session_state.nn
 else:
-    nn = get_neural_network()
+    with st.spinner("Fetching neural network, hang on...", show_time=True):
+        nn = get_neural_network()
     st.session_state.nn = nn
 
-st.header("Write a digit 🖋️")
+st.header("Write a digit (i.e. 1, 2, ...) 🖋️")
 
 # Accept drawing as user input
 drawing = st_canvas(
@@ -86,11 +85,11 @@ if calculate:
 
     st.header("Best guess:")
     if guess[0][0] > 0.8:
-        st.write(f"I'm pretty sure it's a {guess[0][1]} 😁")
+        st.write(f"I'm _pretty_ sure thats's a {guess[0][1]} 😁")
     elif guess[0][0] > 0.4:
         st.write(f"It kinda looks like a {guess[0][1]} 🙂")
     elif guess[0][0] > 0.2:
-        st.write(f"It could be a {guess[0][1]} 🤔")
+        st.write(f"It _could_ be a {guess[0][1]} 🤔")
     else:
         st.write(f"My best guess is a {guess[0][1]} 🫣")
     if guess[1][0] > 0.2:
@@ -101,10 +100,12 @@ if calculate:
 
         # Input layer
         st.write(
-            "The digit is first pre-preprocessed, \
-                 that is: cropped, centered and turned into $28 \\times 28$ pixles \
-                 (which is the same format the MNIST dataset operates with). \
-                 After pre-processing, the digit looks like this:"
+            """
+            The digit is first pre-preprocessed, \
+            that is: cropped, centered and turned into $28 \\times 28$ pixles \
+            (which is the same format the MNIST dataset operates with). \
+            After pre-processing, the digit looks like this:
+            """
         )
         fig, ax = plt.subplots(figsize=(4, 4), frameon=False)  # type: ignore
         plt.imshow(drawing_array_resized, cmap="plasma")  # type: ignore
@@ -114,11 +115,14 @@ if calculate:
 
         # Hidden layer(s)
         st.write(
-            "Next, the digit is made into a $784$ ($=28 \\times 28$) element-long vector, \
-                 which is fed to the predict-method (i.e. _forward propagation_) of the pre-trained neural network instance. \
-                 This is what the activations through the hidden layers look like \
-                 (the vectors have been made into square matrices for visual purposes):"
+            """
+            Next, the digit is made into a $784$ ($=28 \\times 28$) element-long vector, \
+            which is fed to the predict-method (i.e. _forward propagation_-method) of the pre-trained neural network instance. \
+            This is what the activations through the hidden layers look like \
+            (the vectors have been made into square matrices for visual purposes):
+            """
         )
+
         fig, ax = plt.subplots(nrows=1, ncols=nn.n_hidden, figsize=(nn.n_hidden * 2, 2), frameon=False)  # type: ignore
         for i, activation in enumerate(nn.last_activations[:-1]):
             ax[i].imshow(activation.reshape(15, 15), cmap="plasma")

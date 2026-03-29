@@ -6,7 +6,7 @@ import os
 
 
 # Function to run once and get neural net from pickle stored in bucket
-@st.cache_data
+@st.cache_data(show_spinner=False)
 def get_neural_network():
     # Set the path to your service account key file if running locally
     if Path("neural-network-app-440619-e35407f6e90c.json").exists():
