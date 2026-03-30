@@ -1,13 +1,8 @@
 import streamlit as st
-from functions import get_neural_network
 
-# Get NeuralNetwork-instance
-if "nn" in st.session_state:
-    nn = st.session_state.nn
-else:
-    with st.spinner("Fetching neural network, hang on...", show_time=True):
-        nn = get_neural_network()
-    st.session_state.nn = nn
+from backend.backend import return_neural_network
+
+nn = return_neural_network()
 
 st.markdown(
     f"""

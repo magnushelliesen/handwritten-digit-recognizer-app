@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas  # type: ignore
 
-from functions import get_neural_network
+from backend.backend import return_neural_network
 from backend._0_backend import (
     recognize_on_click,
     print_guess,
@@ -9,13 +9,7 @@ from backend._0_backend import (
     reset_on_click,
 )
 
-# Get NeuralNetwork-instance
-if "nn" in st.session_state:
-    nn = st.session_state.nn
-else:
-    with st.spinner(":rainbow[Fetching neural network, hang on...]", show_time=True):
-        nn = get_neural_network()
-    st.session_state.nn = nn
+nn = return_neural_network()
 
 st.session_state.setdefault("is_guessing", False)
 

@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit_drawable_canvas import st_canvas  # type: ignore
 import numpy as np
 from matrix_mapper.matrix_mapper import matrix_mapper  # type: ignore
 from functions import center_input
