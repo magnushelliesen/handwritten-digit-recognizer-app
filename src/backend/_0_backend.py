@@ -66,7 +66,6 @@ def recognize_on_click(drawing: CanvasResult, nn: NeuralNetwork) -> None:
 
 
 def print_guess() -> None:
-    st.subheader("Best guess:")
     if st.session_state.guess[0][0] > 0.8:
         st.write(
             f":green[I'm _pretty_ sure thats's a {st.session_state.guess[0][1]}] 😁"
@@ -84,8 +83,6 @@ def print_guess() -> None:
 
 
 def print_steps(nn: NeuralNetwork) -> None:
-    st.subheader("Steps in calculation:")
-
     # Input layer
     st.write(
         """

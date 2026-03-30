@@ -21,7 +21,7 @@ st.session_state.setdefault("is_guessing", False)
 
 
 if not st.session_state.is_guessing:
-    st.subheader("Write a digit (i.e. 1, 2, ...) 🖋️")
+    st.subheader("Write a digit (1, 2, ...) 🖋️")
 
     # Accept drawing as user input
     drawing = st_canvas(
@@ -39,10 +39,12 @@ if not st.session_state.is_guessing:
     ):
         pass
 else:
+    st.subheader("Best guess 💡")
     print_guess()
 
-    if st.button("Reset", icon="♻️", on_click=reset_on_click):
+    if st.button("Reset", icon="↩️", on_click=reset_on_click):
         pass
 
     if st.button("Show nitty gritty details", icon="🧮"):
+        st.subheader("Steps in calculation 🚀")
         print_steps(nn)
