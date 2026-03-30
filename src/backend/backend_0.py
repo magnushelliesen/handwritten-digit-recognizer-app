@@ -87,8 +87,8 @@ def print_steps(nn: NeuralNetwork) -> None:
     with st.container(border=True):
         # Input layer
         st.write(
-            "The digit is first pre-preprocessed",
-            "that is: cropped, centered and turned into $28 \\times 28$ pixles",
+            "The digit is first pre-preprocessed,",
+            "that is: cropped, centered, and turned into $28 \\times 28$ pixles",
             "(which is the same format the MNIST dataset operates with).",
             "After pre-processing, the digit looks like this:",
         )
