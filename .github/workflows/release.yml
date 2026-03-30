@@ -1,0 +1,50 @@
+name: Build and Deploy to Cloud Run
+
+on:
+  workflow_dispatch:  # Manual trigger
+
+env:
+  GCP_PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
+  SERVICE_NAME: handwritten-digit-recognizer-app
+  REGION: asia-east1
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ env.GCP_SA_KEY }}
+
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.GCP_PROJECT_ID }}
+
+      - name: Configure Docker for GCP
+        run: gcloud auth configure-docker
+
+      - name: Build Docker image
+        run: |
+          docker build -t gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME}:${GITHUB_SHA} .
+          docker tag gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME}:${GITHUB_SHA} \
+                     gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME}:latest
+
+      - name: Push Docker image to GCR
+        run: |
+          docker push gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME}:${GITHUB_SHA}
+          docker push gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME}:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy ${SERVICE_NAME} \
+            --image gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME}:${GITHUB_SHA} \
+            --platform managed \
+            --region ${REGION} \
+            --allow-unauthenticated

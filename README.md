@@ -1,0 +1,13 @@
+# handwritten-digit-recognizer-app
+
+The app is hosted on Google Cloud Run: [https://handwritten-digit-recognizer-app-569320861368.asia-east1.run.app/](https://handwritten-digit-recognizer-app-569320861368.asia-east1.run.app/).
+
+Any changes to the app are released using a GitHub Action defined by [release.yml](https://github.com/magnushelliesen/handwritten-digit-recognizer-app/blob/main/.github/workflows/release.yml). The necessary secrets to the Google Cloud Project are stored as repo secrets.
+
+---
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/f29b80bf-7967-44c6-95a7-09e00ecb3190" alt="Image Description" width="400"/>
+</p>
+
+---
+The app uses the neural network-class: [https://github.com/magnushelliesen/neural-network](https://github.com/magnushelliesen/neural-network).
