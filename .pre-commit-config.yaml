@@ -3,7 +3,7 @@ repos:
     rev: v1.18.2
     hooks:
       - id: mypy
-        files: ^neural_network/
+        files: ^src/
         args: [--strict]
 
   - repo: https://github.com/psf/black
