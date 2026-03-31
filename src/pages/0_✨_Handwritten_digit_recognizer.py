@@ -14,10 +14,10 @@ nn = return_neural_network()
 
 st.session_state.setdefault("is_guessing", False)
 
-with st.container(width=400, horizontal_alignment="center"):
+with st.container(width=400):
     if not st.session_state.is_guessing:
         st.subheader("Write a digit 🖋️")
-        with st.container(border=True):
+        with st.container(border=True, horizontal_alignment="center"):
             st.write("Such as 1, 2, ... (It doesn't know letters.)")
 
             # Accept drawing as user input
