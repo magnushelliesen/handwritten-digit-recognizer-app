@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas  # pyright: ignore
+import numpy as np
 
 from backend.backend import return_neural_network
 from backend.backend_0 import (
@@ -39,6 +40,12 @@ with st.container(width=400):
                 on_click=recognize_on_click,
                 args=[drawing, nn],
                 width="stretch",
+                disabled=np.array(
+                    drawing.image_data  # pyright: ignore
+                    if drawing.image_data is not None  # pyright: ignore
+                    else 0
+                ).std()
+                == 0,
             ):
                 pass
     else:
