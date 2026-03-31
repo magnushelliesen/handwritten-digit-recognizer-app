@@ -67,20 +67,23 @@ def recognize_on_click(drawing: CanvasResult, nn: NeuralNetwork) -> None:
 
 
 def print_guess() -> None:
-    if st.session_state.guess[0][0] > 0.8:
-        st.write(
-            f":green[I'm _pretty_ sure thats's a {st.session_state.guess[0][1]}] 😁"
-        )
-    elif st.session_state.guess[0][0] > 0.4:
-        st.write(f":orange[It kinda looks like a {st.session_state.guess[0][1]}] 🙂")
-    elif st.session_state.guess[0][0] > 0.2:
-        st.write(f":orange[It _could_ be a {st.session_state.guess[0][1]}] 🤔")
-    else:
-        st.write(f":red[My best guess is a {st.session_state.guess[0][1]}] 🫣")
-    if st.session_state.guess[1][0] > 0.2:
-        st.write(
-            f":red[... but it could also be a {st.session_state.guess[1][1]}] 😵‍💫"
-        )
+    with st.container(border=True):
+        if st.session_state.guess[0][0] > 0.8:
+            st.write(
+                f":green[I'm _pretty_ sure thats's a {st.session_state.guess[0][1]}] 😁"
+            )
+        elif st.session_state.guess[0][0] > 0.4:
+            st.write(
+                f":orange[It kinda looks like a {st.session_state.guess[0][1]}] 🙂"
+            )
+        elif st.session_state.guess[0][0] > 0.2:
+            st.write(f":orange[It _could_ be a {st.session_state.guess[0][1]}] 🤔")
+        else:
+            st.write(f":red[My best guess is a {st.session_state.guess[0][1]}] 🫣")
+        if st.session_state.guess[1][0] > 0.2:
+            st.write(
+                f":red[... but it could also be a {st.session_state.guess[1][1]}] 😵‍💫"
+            )
 
 
 def print_steps(nn: NeuralNetwork) -> None:
@@ -103,10 +106,9 @@ def print_steps(nn: NeuralNetwork) -> None:
 
         # Hidden layer(s)
         st.write(
-            "Next, the digit is made into a $784$ ($=28 \\times 28$) element-long vector",
+            "Next, the digit is made into a $784$ (i.e. $=28 \\times 28$) element-long vector,",
             "which is fed to the predict-method (i.e. _forward propagation_-method) of the pre-trained neural network instance.",
-            "This is what the activations through the hidden layers look like",
-            "(the vectors have been made into square matrices for visual purposes, it's _not_ how the neural network sees them):",
+            "This is what the activations through the hidden layers look like:",
         )
 
         fig, ax = plt.subplots(  # pyright: ignore
@@ -122,6 +124,10 @@ def print_steps(nn: NeuralNetwork) -> None:
             ax[i].set_xticks([])
             ax[i].set_yticks([])
         st.pyplot(fig)
+
+        st.write(
+            "(The vectors have been made into square matrices for visual purposes, it's _not_ how the neural network sees them.)",
+        )
 
         # Output layer
         st.write(
@@ -145,8 +151,8 @@ def print_steps(nn: NeuralNetwork) -> None:
 
     with st.container(border=True):
         st.write(
-            "_Note that the neural network will_ always _return a guess, it'll_ never _say \"I don't know\".",
-            "But you must forgive it, it's what it's been trained to do..._",
+            ":gray[_Note that the neural network will_ always _return a guess, it'll_ never _say \"I don't know\".",
+            "But you must forgive it, it's what it's been trained to do..._]",
         )
 
 

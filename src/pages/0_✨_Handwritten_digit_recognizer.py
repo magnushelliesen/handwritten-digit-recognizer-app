@@ -1,5 +1,6 @@
 import streamlit as st
 from streamlit_drawable_canvas import st_canvas  # pyright: ignore
+import numpy as np
 
 from backend.backend import return_neural_network
 from backend.backend_0 import (
@@ -16,27 +17,37 @@ st.session_state.setdefault("is_guessing", False)
 with st.container(width=400):
     if not st.session_state.is_guessing:
         st.subheader("Write a digit 🖋️")
-        st.write("Such as 1, 2, ... (It doesn't know letters.)")
+        with st.container(border=True):
+            st.write("Such as 1, 2, ... (It doesn't know letters.)")
 
-        # Accept drawing as user input
-        drawing = st_canvas(
-            stroke_width=40,
-            stroke_color="#000000",
-            background_color="#FFFFFF",
-            width=400,
-            height=400,
-            drawing_mode="freedraw",
-            key="canvas",
-        )
+            _, col, _ = st.columns([1, 6, 1])
 
-        if st.button(
-            "Recognize digit",
-            icon="👀",
-            on_click=recognize_on_click,
-            args=[drawing, nn],
-            width="stretch",
-        ):
-            pass
+            # Accept drawing as user input
+            with col:
+                drawing = st_canvas(
+                    stroke_width=30,
+                    stroke_color="#000000",
+                    background_color="#FFFFFF",
+                    width=300,
+                    height=300,
+                    drawing_mode="freedraw",
+                    key="canvas",
+                )
+
+            if st.button(
+                "Recognize digit",
+                icon="👀",
+                on_click=recognize_on_click,
+                args=[drawing, nn],
+                width="stretch",
+                disabled=np.array(
+                    drawing.image_data  # pyright: ignore
+                    if drawing.image_data is not None  # pyright: ignore
+                    else 0
+                ).std()
+                == 0,
+            ):
+                pass
     else:
         st.subheader("Best guess 💡")
         print_guess()
