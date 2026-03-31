@@ -4,7 +4,7 @@ from backend.backend import return_neural_network
 
 nn = return_neural_network()
 
-with st.container(width=400):
+with st.container(width="content"):
     st.subheader("About the app")
     with st.container(border=True):
         st.markdown(
