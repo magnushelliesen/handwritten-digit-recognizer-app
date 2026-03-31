@@ -14,7 +14,7 @@ nn = return_neural_network()
 
 st.session_state.setdefault("is_guessing", False)
 
-with st.container(width=400):
+with st.container(width="content", horizontal_alignment="center"):
     if not st.session_state.is_guessing:
         st.subheader("Write a digit 🖋️")
         with st.container(border=True, horizontal_alignment="center"):
