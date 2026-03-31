@@ -14,25 +14,22 @@ nn = return_neural_network()
 
 st.session_state.setdefault("is_guessing", False)
 
-with st.container(width=400):
+with st.container(width=400, horizontal_alignment="center"):
     if not st.session_state.is_guessing:
         st.subheader("Write a digit 🖋️")
         with st.container(border=True):
             st.write("Such as 1, 2, ... (It doesn't know letters.)")
 
-            _, col, _ = st.columns([1, 6, 1])
-
             # Accept drawing as user input
-            with col:
-                drawing = st_canvas(
-                    stroke_width=30,
-                    stroke_color="#000000",
-                    background_color="#FFFFFF",
-                    width=300,
-                    height=300,
-                    drawing_mode="freedraw",
-                    key="canvas",
-                )
+            drawing = st_canvas(
+                stroke_width=30,
+                stroke_color="#000000",
+                background_color="#FFFFFF",
+                width=300,
+                height=300,
+                drawing_mode="freedraw",
+                key="canvas",
+            )
 
             if st.button(
                 "Recognize digit",
