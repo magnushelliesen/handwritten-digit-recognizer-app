@@ -18,16 +18,19 @@ with st.container(width=400):
         st.subheader("Write a digit 🖋️")
         st.write("Such as 1, 2, ... (It doesn't know letters.)")
 
+        _, col, _ = st.columns([1, 6, 1])
+
         # Accept drawing as user input
-        drawing = st_canvas(
-            stroke_width=40,
-            stroke_color="#000000",
-            background_color="#FFFFFF",
-            width=400,
-            height=400,
-            drawing_mode="freedraw",
-            key="canvas",
-        )
+        with col:
+            drawing = st_canvas(
+                stroke_width=30,
+                stroke_color="#000000",
+                background_color="#FFFFFF",
+                width=300,
+                height=300,
+                drawing_mode="freedraw",
+                key="canvas",
+            )
 
         if st.button(
             "Recognize digit",
