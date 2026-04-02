@@ -47,4 +47,5 @@ jobs:
             --image gcr.io/${GCP_PROJECT_ID}/${SERVICE_NAME}:${GITHUB_SHA} \
             --platform managed \
             --region ${REGION} \
-            --allow-unauthenticated
+            --allow-unauthenticated \
+            --concurrency=1
