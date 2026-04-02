@@ -48,4 +48,4 @@ jobs:
             --platform managed \
             --region ${REGION} \
             --allow-unauthenticated \
-            --concurrency=10
+            --concurrency=50
