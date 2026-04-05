@@ -1,6 +1,6 @@
 # handwritten-digit-recognizer-app
 
-The app is hosted on Google Cloud Run: [https://handwritten-digit-recognizer-app-569320861368.asia-east1.run.app/](https://handwritten-digit-recognizer-app-569320861368.asia-east1.run.app/).
+The app is hosted on [Google Cloud Run](https://handwritten-digit-recognizer-app-569320861368.asia-east1.run.app/).
 
 Any changes to the app are rolled out using a [GitHub Action](https://github.com/magnushelliesen/handwritten-digit-recognizer-app/blob/main/.github/workflows/release.yml). The necessary secrets to the Google Cloud Project are stored as repo secrets.
 
