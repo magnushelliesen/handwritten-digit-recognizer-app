@@ -2,7 +2,7 @@
 
 The app is hosted on [Google Cloud Run](https://handwritten-digit-recognizer-app-569320861368.asia-east1.run.app/). Any changes to the app are rolled out using a [GitHub Action](https://github.com/magnushelliesen/handwritten-digit-recognizer-app/blob/main/.github/workflows/release.yml). (The necessary service account credentials for the Google Cloud project are stored as _repo secrets_.)
 
-Upon PR into main, a [GitHub Action](pre-commit-checks.yml) runs to make sure the changes satisfy Mypy and Black.
+Upon PR into main, a [GitHub Action](https://github.com/magnushelliesen/handwritten-digit-recognizer-app/blob/main/.github/workflows/pre-commit-checks.yml) runs to make sure the changes satisfy Mypy and Black.
 
 ---
 <p align="center">
