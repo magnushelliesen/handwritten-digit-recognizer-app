@@ -48,4 +48,6 @@ jobs:
             --platform managed \
             --region ${REGION} \
             --allow-unauthenticated \
-            --concurrency=50
+            --concurrency=50 \
+            --session-affinity \
+            --max-instances=1
